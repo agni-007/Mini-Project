@@ -51,9 +51,9 @@ implementation (1).md   # original requirements / phase plan (source of truth)
 |---|---|---|
 | 1 | Reconnaissance + plan | Complete |
 | 2 | Skeleton, env, quality checks | Complete |
-| 3 | Sensor capture + windowing | Pending approval |
-| 4 | Dataset + baseline model | Blocked (dataset choice) |
-| 5 | Mobile conversion + local inference | Pending |
+| 3 | Sensor capture + windowing | Complete |
+| 4 | Dataset + baseline model | Scaffolded (BLOCKED on dataset) |
+| 5 | Mobile conversion + local inference | Pending approval |
 | 6 | Flower server + Python test clients | Pending |
 | 7 | Android FL integration | Risk (legacy protocol) |
 | 8 | Coarse reporting API | Pending |

@@ -3,15 +3,15 @@
 Host-side machine learning: dataset handling, baseline training, evaluation, and mobile
 model conversion.
 
-**Status:** Phase 4+. No code yet, because the labelled dataset choice is unresolved
-(the reference pothole repo has no public dataset and no license). See
-`docs/IMPLEMENTATION_PLAN.md`.
+**Status:** Phase 4 (scaffolded). Dataset choice is currently **BLOCKED** (reference
+`ht-eml/pothole-detection` has no public dataset and no license). A synthetic,
+clearly-labelled demo dataset may be used later for pipeline validation only; no
+real-world accuracy is claimed.
 
-Planned contents:
-
+Planned contents (when unblocked):
 - `data/` — local dataset (gitignored; never commit personal or licensed-restricted data)
 - `train.py`, `evaluate.py`, `convert_model.py`
-- `requirements.txt` — pinned host training dependencies (added in Phase 4)
+- `requirements.txt` — pinned host training dependencies (added when needed)
 
-Do not add model accuracy, dataset size, or label claims here until they are actually
-produced and verified.
+See `docs/MODEL_CONTRACT.md` for the contract template (to be filled in once data is
+inspected). Do not add accuracy, dataset size, or labels until verified.
