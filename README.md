@@ -53,8 +53,8 @@ implementation (1).md   # original requirements / phase plan (source of truth)
 | 2 | Skeleton, env, quality checks | Complete |
 | 3 | Sensor capture + windowing | Complete |
 | 4 | Dataset + baseline model | Scaffolded (BLOCKED on dataset) |
-| 5 | Mobile conversion + local inference | Pending approval |
-| 6 | Flower server + Python test clients | Pending |
+| 5 | Mobile conversion + local inference | Scaffolded (no model yet) |
+| 6 | Flower server + Python test clients | Pending approval |
 | 7 | Android FL integration | Risk (legacy protocol) |
 | 8 | Coarse reporting API | Pending |
 | 9 | Hotspot dashboard | Pending |
