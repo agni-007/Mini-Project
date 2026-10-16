@@ -29,7 +29,9 @@ make lint           # ruff check .
 make test           # pytest (fl-server + reporting-api)
 ```
 
-Expected result (Phase 2): `ruff` → "All checks passed"; `pytest` → 6 passed.
+Expected result (Phase 6): `ruff` → "All checks passed"; `pytest` → 14 passed
+(including the real two-client federated round in
+`fl-server/tests/test_federated_round.py`).
 
 ### Troubleshooting: an unrelated `PYTHONPATH` (e.g. ROS)
 
@@ -55,10 +57,37 @@ cd android-app && ./gradlew test
 Verified output: `BUILD SUCCESSFUL`, debug APK at
 `android-app/app/build/outputs/apk/debug/app-debug.apk`, unit tests pass.
 
+### Run on a real device (verified on-device)
+
+With a device connected via USB debugging (`adb devices` shows it):
+
+```sh
+export ANDROID_HOME=/home/agnivesh/Android/Sdk
+cd android-app && ./gradlew installDebug
+$ANDROID_HOME/platform-tools/adb shell am start -n org.fedroad.net/.MainActivity
+```
+
+The activity shows a live status label. Read it non-interactively with:
+
+```sh
+$ANDROID_HOME/platform-tools/adb shell uiautomator dump /sdcard/ui.xml
+$ANDROID_HOME/platform-tools/adb shell cat /sdcard/ui.xml | grep -o 'text="[^"]*"'
+```
+
+**Verified on-device (2026-10-16, Realme RMX3868, Android 14):** the app installed and
+launched without crashing; the accelerometer streamed live (sample count rising
+continuously); `EventWindowExtractor` emitted windows (`Last window: 128 samples`);
+`Inference: not_ready` (expected, no model yet); pause/resume (Home → relaunch) worked
+with no crash and no `FATAL` entries in logcat.
+
+> Caveat: this validates the sensing/windowing/status plumbing only. "Events detected"
+> during this run came from device handling, not from a validated classifier. Detection
+> accuracy is still blocked on the Phase 4 dataset/model.
+
 ## What is intentionally not here yet
 
 - No dataset or trained model (Phase 4; dataset choice unresolved).
-- No TFLite conversion (Phase 5).
-- No multi-client federated round (Phase 6).
-- No Android FL client (Phase 7, risk).
+- No TFLite conversion or real on-device model (Phase 5 scaffold only; `Inference:
+  not_ready`).
+- No Android federated-learning client (Phase 7, risk).
 - No coarse-report validation or dashboard (Phases 8–9).

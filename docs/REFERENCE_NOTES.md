@@ -214,6 +214,10 @@ Verified by running commands in this session:
     `android-37`, so the project targets **compileSdk 36** (platform auto-installed by
     Gradle). See `docs/IMPLEMENTATION_PLAN.md` Phase 2.
 - A Java/Gradle build was **verified successful** in Phase 2 (see `docs/SETUP.md`).
+- **On-device verification (2026-10-16):** a real device (Realme RMX3868, Android 14) was
+  connected over USB; `./gradlew installDebug` installed the debug APK, the app launched
+  without crashing, and accelerometer capture streamed live with windowing active. See
+  `docs/SETUP.md` → "Run on a real device" for commands and caveats.
 
 ---
 
