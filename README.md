@@ -5,10 +5,10 @@ edge devices. Android phones capture accelerometer motion, classify possible roa
 on-device, optionally contribute model updates to a Flower federated server, and
 optionally upload only coarse, aggregated hazard reports for a municipal dashboard.
 
-> **Project status: Phase 1 (reconnaissance) complete.** This README describes the
-> project intent and verified constraints. No application code has been written yet.
-> Claims are labelled **verified**, **planned**, or **blocked**. See
-> `docs/REFERENCE_NOTES.md` and `docs/IMPLEMENTATION_PLAN.md`.
+> **Project status: Phase 2 (skeleton + quality checks) complete.** The repository now
+> has a buildable Android app skeleton, a Flower server skeleton, and a reporting-API
+> skeleton, with lint/tests passing. See `docs/SETUP.md`, `docs/REFERENCE_NOTES.md`, and
+> `docs/IMPLEMENTATION_PLAN.md`.
 
 ## Goals
 
@@ -30,15 +30,18 @@ optionally upload only coarse, aggregated hazard reports for a municipal dashboa
   API is intended to reject precise coordinates and raw sensor payloads.
 - No production security or anonymity guarantees are claimed.
 
-## Repository layout (planned)
+## Repository layout
 
 ```text
-docs/            # reference notes, plan, model contract, privacy/data flow
-ml/              # dataset handling, training, evaluation, conversion
-fl-server/       # Flower server and Python test clients
-reporting-api/   # coarse hazard-report API with validation + aggregation
-dashboard/       # Leaflet + OpenStreetMap aggregated view
-android-app/     # Android capture + inference (placeholder until Phase 3/5)
+docs/            # reference notes, plan, setup, model contract, privacy/data flow
+ml/              # dataset handling, training, evaluation, conversion (Phase 4+)
+fl-server/       # Flower server skeleton + tests
+reporting-api/   # coarse hazard-report API skeleton + tests
+dashboard/       # Leaflet + OpenStreetMap aggregated view (Phase 9)
+android-app/     # Kotlin Android app (buildable skeleton; sensors in Phase 3)
+Makefile         # install / lint / test / run targets
+pytest.ini       # pytest config
+ruff.toml        # lint config
 implementation (1).md   # original requirements / phase plan (source of truth)
 ```
 
@@ -47,8 +50,8 @@ implementation (1).md   # original requirements / phase plan (source of truth)
 | Phase | Description | Status |
 |---|---|---|
 | 1 | Reconnaissance + plan | Complete |
-| 2 | Skeleton, env, quality checks | Pending approval |
-| 3 | Sensor capture + windowing | Pending |
+| 2 | Skeleton, env, quality checks | Complete |
+| 3 | Sensor capture + windowing | Pending approval |
 | 4 | Dataset + baseline model | Blocked (dataset choice) |
 | 5 | Mobile conversion + local inference | Pending |
 | 6 | Flower server + Python test clients | Pending |
@@ -56,6 +59,17 @@ implementation (1).md   # original requirements / phase plan (source of truth)
 | 8 | Coarse reporting API | Pending |
 | 9 | Hotspot dashboard | Pending |
 | 10 | End-to-end validation + docs | Pending |
+
+## Getting started
+
+```sh
+make install         # python3.11 venv + pinned deps
+make lint            # ruff
+make test            # pytest (currently 6 tests)
+make android-build   # ./gradlew assembleDebug (needs Android SDK)
+```
+
+Full details: `docs/SETUP.md`.
 
 ## Verified environment constraints (Phase 1)
 

@@ -83,13 +83,17 @@ acceptance criteria achievable.
 ### Phase 1 — Reconnaissance (COMPLETE)
 Deliver `docs/REFERENCE_NOTES.md`, this plan, `README.md`, fresh Git repo + remote.
 
-### Phase 2 — Project skeleton and quality checks (PLANNED)
-- Create `ml/`, `fl-server/`, `reporting-api/`, `dashboard/`, `android-app/` (placeholder).
-- Add `.gitignore` (venv, build outputs, `*.keystore`, real data, model binaries).
-- Pin Python deps (`flwr==1.40.0`, `numpy`, test tooling) in `fl-server/pyproject.toml`
-  or `requirements.txt`. Use `python3.11` virtualenv.
-- Add lint/test entry points; create empty-state tests that actually run.
-- **Exit:** fresh checkout + documented commands run cleanly.
+### Phase 2 — Project skeleton and quality checks (COMPLETE)
+- Created `android-app/` (Gradle 8.13, AGP 8.13.2, Kotlin 2.2.21, compileSdk 36),
+  `fl-server/`, `reporting-api/`, `ml/`, `dashboard/`, `.gitignore`, `Makefile`,
+  `pytest.ini`, `ruff.toml`.
+- Pinned Python deps in a `python3.11` venv; tests and lint pass.
+- Android SDK verified at `/home/agnivesh/Android/Sdk`; `./gradlew assembleDebug` and
+  `./gradlew test` succeed (debug APK produced).
+- **Exit met:** fresh checkout + documented commands run cleanly (see `docs/SETUP.md`).
+- Update: compileSdk is **36** rather than the SDK's `android-37.0` directory, because
+  AGP 8.13.2 resolves `android-37` by hash and the installed preview platform is named
+  `android-37.0`. Platform 36 was auto-installed by Gradle.
 
 ### Phase 3 — Sensor capture + windowing (PLANNED)
 - Kotlin accelerometer capture with bounded ring buffer, configurable sample rate, and

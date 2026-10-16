@@ -1,0 +1,51 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+.python-version
+
+# ---- Android / Gradle ----
+.gradle/
+android-app/local.properties
+android-app/**/build/
+android-app/build/
+*.apk
+*.aab
+*.ap_
+*.dex
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ---- Secrets / signing ----
+*.keystore
+*.jks
+keystore.properties
+*.pem
+.env
+.env.*
+
+# ---- Data / models (kept local, never committed) ----
+# NOTE: small packaged .tflite models for the app MAY be committed later with
+# explicit approval; large training artifacts must not be.
+data/
+ml/data/
+ml/artifacts/
+*.pb
+*.h5
+*.ckpt
+*.keras
+
+# ---- Logs / OS / editors ----
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.iml

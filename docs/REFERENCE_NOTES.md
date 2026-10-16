@@ -204,9 +204,16 @@ Verified by running commands in this session:
 - Java: OpenJDK 21.0.12 (note: outside the Android Kotlin example's stated JDK ≤16).
 - Installed Python ML packages: only `numpy 1.26.4` found. No `flwr`, no `tensorflow`,
   no `torch`.
-- Android tooling: `adb` present at `/usr/bin/adb`; **no Android SDK** found
-  (`ANDROID_HOME`/`ANDROID_SDK_ROOT` unset, no `~/Android/Sdk`, no `/usr/lib/android-sdk`,
-  no `sdkmanager`, no `gradle`). Building an APK locally is **not currently possible**.
+- Android tooling: `adb` present at `/usr/bin/adb`. **Update:** an Android SDK **is**
+  installed at `/home/agnivesh/Android/Sdk` (provided by the user after the initial
+  probe). Verified contents: `build-tools/36.0.0` (+ Gradle later auto-installed
+  `35.0.0`), `platforms/android-37.0`, `platform-tools`, `emulator`, `system-images`,
+  and an accepted `licenses/android-sdk-license`. There is no `cmdline-tools`/`sdkmanager`
+  and no standalone `gradle`; the project uses the Gradle wrapper instead.
+  - Note: the platform directory is `android-37.0`, but AGP resolves
+    `android-37`, so the project targets **compileSdk 36** (platform auto-installed by
+    Gradle). See `docs/IMPLEMENTATION_PLAN.md` Phase 2.
+- A Java/Gradle build was **verified successful** in Phase 2 (see `docs/SETUP.md`).
 
 ---
 
@@ -218,6 +225,7 @@ Verified by running commands in this session:
 | Event/inference threshold idea | ht-eml/pothole-detection | None | Concept reference only |
 | Precise-GPS upload path | ht-eml/pothole-detection | None | **Do NOT reuse** (privacy anti-pattern) |
 | TFLite signature-based on-device training pattern | flwrlabs/flower `examples/android-kotlin` | Apache-2.0 (repo) | May adapt with attribution, if we choose TFLite |
+| Gradle wrapper (`gradlew`, `gradlew.bat`, `gradle-wrapper.jar`) | flwrlabs/flower `examples/android-kotlin/client` (commit `f8b306c`) | Apache-2.0 (Gradle wrapper is standard) | Copied verbatim in Phase 2 into `android-app/`; `distributionUrl` updated to Gradle 8.13 |
 | `FedAvgAndroid` + legacy `FlowerService` FL path | flwrlabs/flower | Apache-2.0 | Legacy/deprecated; verify in Phase 6 before use |
 
 No upstream code has been copied into this repository in Phase 1.
