@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FedRoad-Net</string>
-    <string name="phase2_status">FedRoad-Net Phase 2 skeleton</string>
+    <string name="capture_status">Samples captured: %1$d\nEvents detected: %2$d\nLast window: %3$d samples</string>
+    <string name="sensor_unavailable">Accelerometer unavailable on this device.</string>
 </resources>
