@@ -3,21 +3,24 @@ package org.fedroad.net
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import org.fedroad.net.ml.PlaceholderInferenceEngine
 import org.fedroad.net.sensing.AccelerometerCapture
 import org.fedroad.net.sensing.EventWindow
+import org.fedroad.net.sensing.Preprocessor
 
 /**
- * Phase 3 skeleton activity.
- *
- * Starts accelerometer capture on resume and stops it on pause, showing capture
- * counts in a debug label. Raw samples stay on-device; nothing is uploaded.
- * On-device inference (Phase 5) will consume the same [EventWindow]s.
+ * Phase 5 scaffold: shows capture stats and whether an on-device inference
+ * engine/model is ready. The actual TFLite model and engine will be added when
+ * a concrete model is available (Phase 5 complete). No predictions are
+ * fabricated when the model is not ready.
  */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var statusText: TextView
     private var capture: AccelerometerCapture? = null
     private var eventCount = 0
+    private val preprocessor = Preprocessor(windowSizeSamples = 128)
+    private val inferenceEngine = PlaceholderInferenceEngine()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,7 @@ class MainActivity : AppCompatActivity() {
             capture.samplesSeen,
             eventCount,
             lastWindowSize,
+            if (inferenceEngine.isReady) "ready" else "not_ready",
         )
     }
 }
