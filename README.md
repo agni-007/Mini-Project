@@ -5,10 +5,10 @@ edge devices. Android phones capture accelerometer motion, classify possible roa
 on-device, optionally contribute model updates to a Flower federated server, and
 optionally upload only coarse, aggregated hazard reports for a municipal dashboard.
 
-> **Project status: Phase 2 (skeleton + quality checks) complete.** The repository now
-> has a buildable Android app skeleton, a Flower server skeleton, and a reporting-API
-> skeleton, with lint/tests passing. See `docs/SETUP.md`, `docs/REFERENCE_NOTES.md`, and
-> `docs/IMPLEMENTATION_PLAN.md`.
+> **Project status: Phase 6 (Flower server + Python test clients) complete.** The
+> repository has a buildable Android app, an on-device inference scaffold, a Flower server
+> with validation + metrics aggregation, and a verified two-client federated round. See
+> `docs/SETUP.md`, `docs/REFERENCE_NOTES.md`, and `docs/IMPLEMENTATION_PLAN.md`.
 
 ## Goals
 
@@ -54,7 +54,7 @@ implementation (1).md   # original requirements / phase plan (source of truth)
 | 3 | Sensor capture + windowing | Complete |
 | 4 | Dataset + baseline model | Scaffolded (BLOCKED on dataset) |
 | 5 | Mobile conversion + local inference | Scaffolded (no model yet) |
-| 6 | Flower server + Python test clients | Pending approval |
+| 6 | Flower server + Python test clients | Complete |
 | 7 | Android FL integration | Risk (legacy protocol) |
 | 8 | Coarse reporting API | Pending |
 | 9 | Hotspot dashboard | Pending |
@@ -65,7 +65,7 @@ implementation (1).md   # original requirements / phase plan (source of truth)
 ```sh
 make install         # python3.11 venv + pinned deps
 make lint            # ruff
-make test            # pytest (currently 6 tests)
+make test            # pytest (14 tests: FL round, server validation, app, ml)
 make android-build   # ./gradlew assembleDebug (needs Android SDK)
 ```
 
@@ -75,7 +75,8 @@ Full details: `docs/SETUP.md`.
 
 - Target remote: `https://github.com/agni-007/Mini-Project.git` (was empty).
 - Python 3.11 available; Flower requires `>=3.11,<4.0` (latest release 1.40.0).
-- No Android SDK is installed locally; no `flwr`/`tensorflow`/`torch` installed yet.
+- Android SDK present at `/home/agnivesh/Android/Sdk`; the Android app builds with the
+  Gradle wrapper (compileSdk 36). No physical device/emulator run yet.
 - Reference `ht-eml/pothole-detection` has **no license** → concept reference only.
 
 ## References

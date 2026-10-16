@@ -217,6 +217,33 @@ Verified by running commands in this session:
 
 ---
 
+## 2.4 Phase 6 verified findings (installed `flwr` 1.40.0)
+
+Verified by running Python against the installed `.venv` in this session:
+
+- `flwr.client.start_numpy_client` and `flwr.client.start_client` still exist but are
+  **lazy, deprecated compatibility re-exports**:
+  `.venv/.../flwr/client/__init__.py` `_LAZY_EXPORTS` maps them to
+  `flwr.compat.client.app`. Both emit a deprecation warning at runtime.
+- Both start functions are **keyword-only**: signature is
+  `start_numpy_client(*, server_address, client, ...)`. Positional calls raise
+  `TypeError`.
+- The legacy Fleet gRPC transport used by these clients is started with
+  `flwr.server.superlink.fleet.grpc_bidi.grpc_server.start_grpc_server(client_manager,
+  server_address, ...)`.
+- `flwr.server.server.init_defaults(server, config, strategy, client_manager)` returns
+  `(Server, ServerConfig)` and builds a default `SimpleClientManager` when none is given.
+- `History` stores distributed metrics as **dicts keyed by metric name**:
+  `metrics_distributed_fit: dict[str, list[tuple[int, Scalar]]]` and
+  `metrics_distributed: dict[str, list[tuple[int, Scalar]]]`. There is **no**
+  `metrics_distributed_evaluate` attribute.
+- `FedAvg.aggregate_fit` returns **empty fit metrics** unless a
+  `fit_metrics_aggregation_fn` is supplied. We add an example-weighted
+  `aggregate_metrics` function so aggregate accuracy/loss is recorded.
+- Verified working: two clients registered against `start_grpc_server` and completed one
+  FedAvg round in ~1.5 s (see `fl-server/tests/test_federated_round.py`). This confirms
+  the legacy Python client/server path is functional under flwr 1.40.0 despite deprecation.
+
 ## 3. Reuse summary
 
 | Component | Source | License | Use in FedRoad-Net |
@@ -235,12 +262,15 @@ No upstream code has been copied into this repository in Phase 1.
 ## 4. Unresolved questions / risks
 
 1. **Android FL client viability.** The only Android FL examples are legacy and target a
-   deprecated protocol; local JDK (21) exceeds their tested range (≤16). Need a decision:
-   (a) attempt the legacy path and verify, or (b) fall back to Python clients for the
-   demonstrated FL round and keep Android inference-only, or (c) use a third route.
-2. **Android build environment.** No Android SDK/build-tools/gradle locally. Building and
-   testing any Android code requires installing Android SDK + accepting licenses, or a
-   prebuilt dev environment.
+   deprecated protocol; local JDK (21) exceeds their tested range (≤16). The **Python**
+   legacy client/server path was verified working in Phase 6 (section 2.4), but the
+   **Android** client path remains untested. Decision still needed for Phase 7:
+   (a) attempt the legacy Android path and verify, (b) keep Android inference-only and
+   demonstrate FL with Python clients, or (c) use a third route.
+2. **Android build environment.** An Android SDK **is** installed (see section 3), and the
+   Android app builds successfully with the Gradle wrapper. A physical device/emulator
+   run of sensor capture has **not** yet been performed, so on-device behavior (sensor
+   rates, latency) is unverified.
 3. **Dataset.** The pothole-detection dataset is not public and the repo has no data.
    Phase 4 needs a public, licensed accelerometer dataset or a clearly-labelled synthetic
    dataset. Model accuracy claims by the upstream author were not reproduced.
